@@ -91,7 +91,7 @@
     .sh2{text-align:center;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
       font-size:clamp(1.75rem,4vw,2.75rem);color:var(--td);line-height:1.25;margin-bottom:14px}
     .slead{text-align:center;max-width:540px;margin:0 auto 52px;font-size:.97rem;color:var(--tm);line-height:1.9}
-    .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}
+    .reveal{opacity:1;transform:none;transition:opacity .7s,transform .7s}
     .reveal.visible{opacity:1;transform:none}
     .wdiv{line-height:0}.wdiv svg{display:block;width:100%}
 
@@ -128,7 +128,9 @@
     .cgrid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
     .acard{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07);transition:transform .3s,box-shadow .3s}
     .acard:hover{transform:translateY(-8px);box-shadow:0 18px 50px rgba(0,119,182,.15)}
-    .athumb{height:170px;display:flex;align-items:center;justify-content:center;font-size:60px}
+    .athumb{height:170px;overflow:hidden;position:relative;}
+    .athumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
+    .acard:hover .athumb img{transform:scale(1.06);}
     .at1{background:linear-gradient(135deg,#90E0EF,#0077B6)}
     .at2{background:linear-gradient(135deg,#FFE8CC,#FF9F43)}
     .at3{background:linear-gradient(135deg,#D8F3DC,#52B788)}
@@ -210,7 +212,7 @@
     .mpi:hover{background:#fff;border-left-color:var(--yell);transform:translateX(4px);box-shadow:0 4px 14px rgba(0,0,0,.14)}
     .mpi strong{display:block;font-size:.87rem;font-weight:700;color:var(--td);margin-bottom:3px}
     .mpi span{font-size:.77rem;color:var(--tm)}
-    #lmap{flex:1;min-width:0}
+    #lmap{flex:1;min-width:0;height:580px}
     .pcrd{width:440px;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 10px 36px rgba(0,0,0,.18)}
     .pcrd::before{content:'';display:block;height:4px;background:linear-gradient(90deg,var(--dark),var(--light))}
     .carousel-container{position:relative;overflow:hidden;background:#f5f5f5;padding-bottom:28px}
@@ -334,6 +336,13 @@
     .ig-link{display:inline-block;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
       color:#fff;font-size:11px;padding:4px 10px;border-radius:20px;text-decoration:none;font-weight:600;}
     .ig-link:hover{opacity:.85;}
+
+    .pop-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+    .pop-report-btn{display:inline-block;background:linear-gradient(135deg,var(--dark),var(--mid));
+      color:#fff;border:none;font-size:11px;padding:5px 11px;border-radius:20px;
+      cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;
+      transition:opacity .2s;}
+    .pop-report-btn:hover{opacity:.85;}
     .pop-nav{display:flex;align-items:center;justify-content:center;gap:12px;
       padding:8px 0;background:var(--foam);border-top:1px solid var(--pale);}
     .pnav-btn{background:var(--mid);color:#fff;border:none;border-radius:50%;
@@ -346,9 +355,196 @@
     .mcard:hover{border-color:var(--mid);box-shadow:0 2px 8px rgba(0,119,182,.15);transform:translateX(3px);}
     .mcard-name{font-size:13px;font-weight:700;color:var(--deep);margin-bottom:3px;}
     .mcard-meta{font-size:11px;color:var(--tm);}
+
+    /* ── Leaderboard ── */
+    .gleader-wrap{max-width:680px;margin:28px auto 56px;padding:0 24px;}
+    .gleader-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .gleader-title{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      font-size:1.25rem;color:#fff;}
+    .gleader-clear-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+      color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:.85rem;}
+    .gleader-clear-btn:hover{background:rgba(255,100,100,.35);}
+    .gleader-board{background:rgba(1,42,94,.65);backdrop-filter:blur(10px);
+      border-radius:16px;border:1px solid rgba(255,255,255,.12);overflow:hidden;}
+    .gleader-row{display:grid;grid-template-columns:44px 1fr auto 80px;align-items:center;
+      padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);transition:background .2s;}
+    .gleader-row:last-child{border-bottom:none;}
+    .gleader-row:hover{background:rgba(255,255,255,.06);}
+    .gleader-top{background:linear-gradient(90deg,rgba(255,209,0,.12),transparent);}
+    .gleader-rank{font-size:1.4rem;text-align:center;}
+    .gleader-name{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;
+      color:#fff;font-size:.95rem;}
+    .gleader-score{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      color:var(--yell);font-size:1.1rem;text-align:right;padding-right:12px;}
+    .gleader-date{font-size:.72rem;color:rgba(255,255,255,.45);text-align:right;}
+    .gleader-empty{padding:24px;text-align:center;color:rgba(255,255,255,.5);font-size:.9rem;}
+
+    /* ── Name input in overlay ── */
+    .gname-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;
+      margin-bottom:16px;width:100%;max-width:340px;}
+    .gname-label{color:rgba(255,255,255,.8);font-size:.88rem;text-align:center;}
+    .gname-row{display:flex;gap:8px;width:100%;}
+    .gname-input{flex:1;padding:10px 14px;border-radius:30px;border:2px solid rgba(255,255,255,.3);
+      background:rgba(255,255,255,.12);color:#fff;font-family:'M PLUS Rounded 1c',sans-serif;
+      font-size:.95rem;outline:none;}
+    .gname-input::placeholder{color:rgba(255,255,255,.4);}
+    .gname-input:focus{border-color:var(--pale);}
+    .gbtn-sm{font-size:.85rem;padding:10px 18px;white-space:nowrap;}
+    .gskip{background:none;border:none;color:rgba(255,255,255,.45);font-size:.8rem;
+      cursor:pointer;text-decoration:underline;}
+    .gskip:hover{color:rgba(255,255,255,.7);}
+
+    /* ── Click Donation section ── */
+    #donation{background:linear-gradient(160deg,#F0FAFF 0%,#e0f4fc 100%);padding:96px 0 88px}
+    .donation-outer{max-width:800px;margin:0 auto;padding:0 24px;}
+    .donation-card{background:#fff;border-radius:28px;
+      box-shadow:0 16px 60px rgba(0,119,182,.14);overflow:hidden;}
+    .donation-top{background:linear-gradient(135deg,var(--dark) 0%,var(--mid) 60%,var(--light) 100%);
+      padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .donation-brand{color:#fff;}
+    .donation-brand-sub{font-size:.78rem;opacity:.7;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+    .donation-brand-name{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.15rem;}
+    .donation-brand-proj{font-size:.82rem;opacity:.8;margin-top:2px;}
+    .donation-progress-wrap{flex:1;min-width:200px;}
+    .donation-progress-label{color:rgba(255,255,255,.8);font-size:.78rem;text-align:right;margin-bottom:6px;}
+    .donation-progress-bar{background:rgba(255,255,255,.2);border-radius:99px;height:12px;overflow:hidden;}
+    .donation-progress-fill{background:linear-gradient(90deg,var(--yell),#ffb703);
+      height:100%;border-radius:99px;transition:width 1.2s ease;width:0%;}
+    .donation-progress-num{color:#fff;font-family:'M PLUS Rounded 1c',sans-serif;
+      font-weight:800;font-size:1.1rem;text-align:right;margin-top:6px;}
+
+    .donation-body{padding:32px 40px;}
+    .donation-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+    .dst{text-align:center;background:linear-gradient(135deg,var(--foam),#e0f4fc);
+      border-radius:16px;padding:18px 12px;}
+    .dsn{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      font-size:1.45rem;color:var(--dark);line-height:1.1;}
+    .dsl{font-size:.72rem;color:var(--tm);margin-top:5px;}
+
+    .donation-points{list-style:none;padding:0;margin:0 0 28px;
+      display:flex;flex-direction:column;gap:10px;}
+    .donation-points li{display:flex;align-items:flex-start;gap:12px;
+      background:#f8fcfe;border-radius:12px;padding:12px 16px;
+      font-size:.92rem;color:var(--td);line-height:1.5;}
+    .donation-points li .dpt-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+
+    .donation-cta{display:flex;justify-content:center;}
+    .donation-btn{display:inline-flex;align-items:center;gap:12px;
+      background:linear-gradient(135deg,var(--dark),var(--mid));
+      color:#fff;text-decoration:none;font-family:'M PLUS Rounded 1c',sans-serif;
+      font-weight:800;font-size:1.1rem;padding:18px 48px;border-radius:99px;
+      box-shadow:0 8px 32px rgba(0,119,182,.35);
+      transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+    .donation-btn::before{content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+      border-radius:99px;}
+    .donation-btn:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(0,119,182,.45);}
+    .donation-btn:active{transform:scale(.97);}
+    .donation-btn-icon{font-size:1.4rem;animation:clickpulse 1.5s ease-in-out infinite;}
+    @keyframes clickpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25) rotate(-8deg)}}
+    .donation-note{text-align:center;margin-top:14px;font-size:.78rem;color:var(--tm);}
+
+    /* ── Live donation indicator ── */
+    .donation-live-header{display:flex;align-items:center;gap:8px;margin-bottom:16px;
+      font-size:.8rem;color:var(--tm);}
+    .dlive-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;
+      transition:background .3s;}
+    .dlive-dot.live{background:#22c55e;animation:livepulse 2s ease-in-out infinite;}
+    .dlive-dot.error{background:#ef4444;}
+    @keyframes livepulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}
+      50%{opacity:.8;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+    .dlive-label{flex:1;}
+    .dlive-refresh{background:none;border:1px solid var(--pale);border-radius:6px;
+      color:var(--mid);font-size:.85rem;padding:2px 8px;cursor:pointer;transition:all .2s;}
+    .dlive-refresh:hover{background:var(--foam);}
+    .dlive-refresh.spinning{animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── 環境ロドリゲスロゴ（各サイズ） ── */
+    .er-logo-badge{height:22px;width:auto;vertical-align:middle;object-fit:contain;
+      margin-right:6px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));}
+    .er-logo-sm{height:28px;width:auto;vertical-align:middle;object-fit:contain;margin-right:8px;}
+
+    /* ══ ビーチクリーンレポート モーダル ══ */
+    .report-overlay{position:fixed;inset:0;background:rgba(1,30,70,.7);backdrop-filter:blur(6px);
+      z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;
+      animation:rfadeIn .25s ease;}
+    .report-overlay.open{display:flex;}
+    @keyframes rfadeIn{from{opacity:0}to{opacity:1}}
+
+    .report-modal{background:#fff;border-radius:24px;max-width:680px;width:100%;
+      max-height:88vh;overflow:hidden;display:flex;flex-direction:column;
+      box-shadow:0 32px 80px rgba(0,0,0,.45);
+      animation:rslideUp .3s cubic-bezier(.34,1.56,.64,1);}
+    @keyframes rslideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+
+    .report-close{position:absolute;top:16px;right:16px;z-index:10;
+      background:rgba(0,0,0,.45);backdrop-filter:blur(4px);border:none;
+      color:#fff;border-radius:50%;width:36px;height:36px;font-size:1rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;}
+    .report-close:hover{background:rgba(0,0,0,.7);}
+
+    /* hero image area */
+    .report-hero{position:relative;height:240px;flex-shrink:0;overflow:hidden;}
+    .report-hero-img{width:100%;height:100%;object-fit:cover;display:block;}
+    .report-hero-grad{position:absolute;inset:0;
+      background:linear-gradient(to top, rgba(1,30,70,.9) 0%, rgba(1,30,70,.1) 60%, transparent 100%);}
+    .report-hero-info{position:absolute;bottom:0;left:0;right:0;padding:20px 24px;}
+    .report-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;
+      color:var(--pale);text-transform:uppercase;margin-bottom:6px;}
+    .report-title{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      font-size:1.25rem;color:#fff;line-height:1.35;margin:0 0 8px;}
+    .report-meta-row{display:flex;flex-wrap:wrap;gap:8px;}
+    .report-meta-row span{background:rgba(255,255,255,.2);backdrop-filter:blur(4px);
+      color:#fff;font-size:.78rem;padding:3px 10px;border-radius:20px;}
+
+    /* scrollable body */
+    .report-body{overflow-y:auto;padding:24px;flex:1;
+      scrollbar-width:thin;scrollbar-color:var(--pale) transparent;}
+
+    /* stat chips */
+    .report-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+    .rst{text-align:center;background:linear-gradient(135deg,var(--foam),#e0f4fc);
+      border-radius:14px;padding:14px 8px;}
+    .rstn{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      font-size:1.3rem;color:var(--dark);}
+    .rstl{font-size:.68rem;color:var(--tm);margin-top:3px;}
+
+    /* pie in modal */
+    .report-pie-wrap{display:flex;align-items:center;gap:16px;
+      background:var(--foam);border-radius:14px;padding:14px 18px;margin-bottom:18px;}
+
+    /* report text content */
+    .report-content{font-size:.9rem;color:var(--td);line-height:1.9;margin-bottom:20px;}
+    .report-content h4{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;
+      color:var(--dark);font-size:1rem;margin:18px 0 6px;display:flex;align-items:center;gap:6px;}
+    .report-content p{margin:0 0 12px;}
+    .report-coming{text-align:center;padding:32px 20px;color:var(--tm);}
+    .report-coming-icon{font-size:3rem;margin-bottom:12px;}
+    .report-coming p{font-size:.9rem;line-height:1.7;}
+
+    /* footer row (IG link) */
+    .report-footer-row{display:flex;gap:10px;flex-wrap:wrap;}
+    .report-ig-btn{display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+      color:#fff;text-decoration:none;font-size:.88rem;font-weight:700;
+      padding:10px 20px;border-radius:30px;}
+    .report-ig-btn:hover{opacity:.85;}
+
+    @media(max-width:600px){
+      .report-modal{max-height:95vh;border-radius:18px 18px 0 0;
+        position:fixed;bottom:0;left:0;right:0;max-width:100%;}
+      .report-overlay{align-items:flex-end;padding:0;}
+      .report-hero{height:190px;}
+      .report-stats-row{grid-template-columns:repeat(3,1fr);}
+    }
     @media(max-width:860px){
       #nav{padding:0 16px}.nlinks{display:none}
       .awrap,.cgrid,.sgrid,.ftop{grid-template-columns:1fr}
+      .donation-stats{grid-template-columns:1fr 1fr}
+      .donation-top{flex-direction:column}
+      .donation-body{padding:24px 20px}
       .cgrid,.sgrid{max-width:400px;margin-left:auto;margin-right:auto}
       .ftop{gap:28px}
       .mapouter{flex-direction:column;height:auto}
@@ -361,10 +557,11 @@
   <a href="#" class="nlogo"><img src="images/うみさんぽロゴ.png" alt="うみさんぽ" class="nlogo-img"/><span class="ntxt nlogo-txt">うみさんぽ</span></a>
   <ul class="nlinks">
     <li><a href="#about">について</a></li>
-    <li><a href="#activity">活動記録</a></li>
     <li><a href="#game">ゲーム</a></li>
     <li><a href="#mapsec">マップ</a></li>
-    <li><a href="#join">参加する</a></li>
+    <li><a href="#join">入会するには</a></li>
+    <li><a href="#donation">クリック募金</a></li>
+    <li><a href="#activity">活動記録</a></li>
     <li><a href="https://www.instagram.com/umisanpo_rodriguez/" target="_blank" class="nigbtn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg> Instagram</a></li>
   </ul>
 </nav>
@@ -385,7 +582,7 @@
   <div class="jelly" style="left:7%;top:52%;">🪼</div>
   <div class="jelly" style="left:85%;top:44%;animation-delay:-2.5s;font-size:22px;">🪼</div>
   <div class="hinn">
-    <div class="hbadge"> 環境ロドリゲス × ビーチクリーン企画</div>
+    <div class="hbadge"><img src="images/環境ロドリゲスロゴ.png" alt="環境ロドリゲス" class="er-logo-badge"/> 環境ロドリゲス × ビーチクリーン企画</div>
     <h1 class="httl">うみ<em>さんぽ</em></h1>
     <p class="hsub">海を守る一歩を、一緒に。</p>
     <p class="hdesc">海岸の清掃活動を通して、海洋ごみ問題と向き合います。<br>早稲田大学 学生環境NPO法人「環境ロドリゲス」の企画です。</p>
@@ -425,32 +622,10 @@
         <span class="tag tg">📢 啓発活動</span>
       </div>
       <div class="srow">
-        <div class="sbox"><div class="snum" id="stat-count">8回+</div><div class="slbl">活動回数</div></div>
-        <div class="sbox"><div class="snum" id="stat-people">108名+</div><div class="slbl">延べ参加人数</div></div>
-        <div class="sbox"><div class="snum" id="stat-weight">36kg+</div><div class="slbl">回収ごみ量</div></div>
+        <div class="sbox"><div class="snum" id="about-stat-count">-</div><div class="slbl">活動回数</div></div>
+        <div class="sbox"><div class="snum" id="about-stat-people">-</div><div class="slbl">延べ参加人数</div></div>
+        <div class="sbox"><div class="snum" id="about-stat-weight">-</div><div class="slbl">回収ごみ量</div></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="wdiv" style="background:#fff;"><svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#F0FAFF;"><path d="M0,28 C360,55 720,0 1080,28 C1260,42 1380,14 1440,28 L1440,0 L0,0 Z" fill="#fff"/></svg></div>
-
-<section id="activity">
-  <div class="eyb">📋 ACTIVITY</div>
-  <h2 class="sh2">最近の活動</h2>
-  <p class="slead">葛西・江ノ島・お台場・熱海など、各地のビーチや公園で仲間と活動中！</p>
-  <div class="cgrid">
-    <div class="acard reveal">
-      <div class="athumb at1">🌊</div>
-      <div class="abody"><div class="adate">2026.02.16</div><div class="atitle">お台場海浜公園（成城大学合同）</div><div class="atxt_">成城大学と合同でお台場を清掃。19名が参加し4.22kgを回収。他大学とのコラボで新たな絆が生まれました。</div></div>
-    </div>
-    <div class="acard reveal" style="transition-delay:.14s">
-      <div class="athumb at2">♨️</div>
-      <div class="abody"><div class="adate">2026.02.14</div><div class="atitle">熱海サンビーチ</div><div class="atxt_">バレンタインデーに熱海の海辺をクリーンアップ。15名で4.22kgを回収し、観光地の海岸美化に貢献しました。</div></div>
-    </div>
-    <div class="acard reveal" style="transition-delay:.28s">
-      <div class="athumb at3">🏖️</div>
-      <div class="abody"><div class="adate">2025.10.26</div><div class="atitle">葛西臨海公園 第1回</div><div class="atxt_">うみさんぽの初回活動地。17名で9.875kgを回収。海辺のごみの多さに驚きながら、精力的に活動しました。</div></div>
     </div>
   </div>
 </section>
@@ -483,9 +658,27 @@
         <div class="ovsub" id="ovsub">ビーチに落ちているごみをクリック／タップして<br>海をきれいにしよう！🐟 魚はさわらないで！<br>30秒で何個拾えるかな？</div>
         <div class="ovsc" id="ovsc" style="display:none;"></div>
         <div class="ovgr" id="ovgr" style="display:none;"></div>
-        <button class="gbtn" id="ovbt" onclick="startGame()">ゲームスタート 🎮</button>
+        <div id="gname-wrap" style="display:none;" class="gname-wrap">
+        <p class="gname-label">名前を入力してランキングに登録！</p>
+        <div class="gname-row">
+          <input type="text" id="gname-input" class="gname-input" placeholder="お名前（最大10文字）" maxlength="10"/>
+          <button class="gbtn gbtn-sm" onclick="saveScore()">登録 🏆</button>
+        </div>
+        <button class="gskip" onclick="skipSave()">スキップ</button>
+      </div>
+      <button class="gbtn" id="ovbt" onclick="startGame()">ゲームスタート 🎮</button>
       </div>
     </div>
+
+  <div class="gleader-wrap reveal">
+    <div class="gleader-header">
+      <h3 class="gleader-title">🏆 ランキング TOP 5</h3>
+      <button class="gleader-clear-btn" onclick="clearLeaderboard()" title="リセット">🗑</button>
+    </div>
+    <div id="gleaderboard" class="gleader-board">
+      <div class="gleader-empty">まだ記録がありません。ゲームに挑戦しよう！</div>
+    </div>
+  </div>
     <div class="gfoot"><span class="gfhint">💡 すばやくクリックしてコンボを狙おう！ 🐟 魚はさわらないで！</span></div>
   </div>
 </section>
@@ -511,10 +704,10 @@
     <div id="lmap"></div>
   </div>
   <div class="msbar">
-    <div class="ms"><div class="msn" id="stat-count">16回</div><div class="msl">実施清掃回数</div></div>
-    <div class="ms"><div class="msn" id="stat-people">247名</div><div class="msl">延べ参加人数</div></div>
-    <div class="ms"><div class="msn" id="stat-weight">86.49kg</div><div class="msl">回収ごみ総量</div></div>
-    <div class="ms"><div class="msn">10ヶ所</div><div class="msl">訪問スポット数</div></div>
+    <div class="ms"><div class="msn" id="map-stat-count">-</div><div class="msl">実施清掃回数</div></div>
+    <div class="ms"><div class="msn" id="map-stat-people">-</div><div class="msl">延べ参加人数</div></div>
+    <div class="ms"><div class="msn" id="map-stat-weight">-</div><div class="msl">回収ごみ総量</div></div>
+    <div class="ms"><div class="msn" id="map-stat-spots">-</div><div class="msl">訪問スポット数</div></div>
   </div>
 </section>
 
@@ -522,19 +715,96 @@
 
 <section id="join">
   <div class="eyb">✋ JOIN US</div>
-  <h2 class="sh2">参加するには？</h2>
+  <h2 class="sh2">入会するには？</h2>
   <p class="slead">うみさんぽは誰でも参加できます！一緒に海をきれいにしましょう 🌊</p>
   <div class="sgrid">
-    <div class="scrd reveal"><div class="snum_">01</div><div class="sico">📱</div><div class="sttl">Instagramをフォロー</div><div class="stxt">@umisanpo_rodriguez をフォローして最新の活動情報・イベント告知をチェック！</div></div>
+    <div class="scrd reveal"><div class="snum_">01</div><div class="sico" style="color:var(--mid)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg></div><div class="sttl">Instagramをフォロー</div><div class="stxt">@umisanpo_rodriguez をフォローして最新の活動情報・イベント告知をチェック！</div></div>
     <div class="scrd reveal" style="transition-delay:.14s"><div class="snum_">02</div><div class="sico">📅</div><div class="sttl">イベントに参加登録</div><div class="stxt">SNSや環境ロドリゲス公式サイトで告知されるイベントに申し込もう。事前申込制です。</div></div>
     <div class="scrd reveal" style="transition-delay:.28s"><div class="snum_">03</div><div class="sico">🏖️</div><div class="sttl">一緒にビーチへGO！</div><div class="stxt">当日は手ぶらでOK！軍手・ゴミ袋は用意します。海をきれいにして楽しもう！</div></div>
   </div>
   <div class="jcta reveal">
     <a href="https://www.instagram.com/umisanpo_rodriguez/" target="_blank" class="btn boc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg> うみさんぽ Instagram</a>
-    <a href="https://www.envrodorigues.com/" target="_blank" class="btn bow" style="color:var(--mid);border-color:var(--mid);">🌿 環境ロドリゲス 公式サイト</a>
+    <a href="https://www.envrodorigues.com/" target="_blank" class="btn bow" style="color:var(--mid);border-color:var(--mid);"><img src="images/環境ロドリゲスロゴ.png" alt="環境ロドリゲス" class="er-logo-sm"/> 環境ロドリゲス 公式サイト</a>
   </div>
 </section>
 
+<div class="wdiv" style="background:#F0FAFF;"><svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#fff;"><path d="M0,28 C360,55 720,0 1080,28 C1260,42 1380,14 1440,28 L1440,0 L0,0 Z" fill="#F0FAFF"/></svg></div>
+
+<section id="donation">
+  <div class="eyb">💚 CLICK DONATION</div>
+  <h2 class="sh2">クリック募金でうみさんぽを応援！</h2>
+  <p class="slead">ボタンを1クリックするだけで、大成温調株式会社から<strong>10円</strong>が寄付されます。<br>登録不要・費用ゼロ！あなたのクリックが海をきれいにします。</p>
+  <div class="donation-outer">
+    <div class="donation-card reveal">
+      <div class="donation-top">
+        <div class="donation-brand">
+          <div class="donation-brand-sub">Supported by</div>
+          <div class="donation-brand-name">大成温調株式会社</div>
+          <div class="donation-brand-proj">LIVZON BEACH PROJECT 第6弾</div>
+        </div>
+        <div class="donation-progress-wrap">
+          <div class="donation-progress-label">目標：30,000クリック</div>
+          <div class="donation-progress-bar">
+            <div class="donation-progress-fill" id="dprogress" style="width:0%"></div>
+          </div>
+          <div class="donation-progress-num" id="dpnum">5,255 / 30,000クリック</div>
+        </div>
+      </div>
+      <div class="donation-body">
+        <div class="donation-live-header">
+          <span class="dlive-dot" id="dlive-dot"></span>
+          <span class="dlive-label" id="dlive-label">読み込み中...</span>
+          <button class="dlive-refresh" id="dlive-refresh" onclick="fetchDonationStats()" title="更新">↺</button>
+        </div>
+        <div class="donation-stats">
+          <div class="dst">
+            <div class="dsn" id="d-clicks">—</div>
+            <div class="dsl">総クリック数</div>
+          </div>
+          <div class="dst">
+            <div class="dsn" id="d-amount">—</div>
+            <div class="dsl">累計寄付金額</div>
+          </div>
+          <div class="dst">
+            <div class="dsn" id="d-remain">—</div>
+            <div class="dsl">目標まであと</div>
+          </div>
+        </div>
+        <ul class="donation-points">
+          <li><span class="dpt-icon">👆</span><span><strong>クリックするだけ</strong>でOK！登録・費用は一切不要です。1日1回クリックできます。</span></li>
+          <li><span class="dpt-icon">💰</span><span>1クリックにつき<strong>10円</strong>が大成温調株式会社からうみさんぽへ寄付されます。</span></li>
+          <li><span class="dpt-icon">🌊</span><span>寄付金はビーチクリーン活動の<strong>交通費・運営費</strong>として大切に活用されます。</span></li>
+        </ul>
+        <div class="donation-cta">
+          <a href="https://gateway.taisei-oncho.co.jp/click_donation/umisanpo/" target="_blank" rel="noopener" class="donation-btn">
+            <span class="donation-btn-icon">👆</span>今すぐクリック募金する
+          </a>
+        </div>
+        <p class="donation-note">※ クリック後、大成温調株式会社のページへ移動します</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="wdiv" style="background:#F0FAFF;"><svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#fff;"><path d="M0,28 C360,55 720,0 1080,28 C1260,42 1380,14 1440,28 L1440,0 L0,0 Z" fill="#F0FAFF"/></svg></div>
+<section id="activity">
+  <div class="eyb">📋 ACTIVITY</div>
+  <h2 class="sh2">最近の活動</h2>
+  <p class="slead">葛西・江ノ島・お台場・熱海など、各地のビーチや公園で仲間と活動中！</p>
+  <div class="cgrid">
+    <div class="acard reveal">
+      <div class="athumb at1"><img src="images/お台場えしかる.jpg" alt="お台場海浜公園" loading="lazy"/></div>
+      <div class="abody"><div class="adate">2026.02.16</div><div class="atitle">お台場海浜公園（成城大学合同）</div><div class="atxt_">成城大学と合同でお台場を清掃。19名が参加し4.22kgを回収。他大学とのコラボで新たな絆が生まれました。</div></div>
+    </div>
+    <div class="acard reveal" style="transition-delay:.14s">
+      <div class="athumb at2"><img src="images/atami.jpg" alt="熱海サンビーチ" loading="lazy"/></div>
+      <div class="abody"><div class="adate">2026.02.14</div><div class="atitle">熱海サンビーチ</div><div class="atxt_">バレンタインデーに熱海の海辺をクリーンアップ。15名で4.22kgを回収し、観光地の海岸美化に貢献しました。</div></div>
+    </div>
+    <div class="acard reveal" style="transition-delay:.28s">
+      <div class="athumb at3"><img src="images/kasai.jpg" alt="葛西臨海公園" loading="lazy"/></div>
+      <div class="abody"><div class="adate">2025.10.26</div><div class="atitle">葛西臨海公園 第1回</div><div class="atxt_">うみさんぽの初回活動地。17名で9.875kgを回収。海辺のごみの多さに驚きながら、精力的に活動しました。</div></div>
+    </div>
+  </div>
+</section>
 <div class="pfwave"><svg viewBox="0 0 1440 72" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="background:#012A5E;"><path d="M0,42 C240,72 480,14 720,42 C960,72 1200,14 1440,42 L1440,0 L0,0 Z" fill="#F0FAFF"/></svg></div>
 
 <footer>
@@ -552,7 +822,8 @@
           <li><a href="#activity">活動記録</a></li>
           <li><a href="#game">ゲームで遊ぶ</a></li>
           <li><a href="#mapsec">ビーチクリーンマップ</a></li>
-          <li><a href="#join">参加するには</a></li>
+          <li><a href="#join">入会するには</a></li>
+          <li><a href="#donation">クリック募金</a></li>
         </ul>
       </div>
       <div class="flinks">
@@ -572,12 +843,33 @@
     </div>
   </div>
 </footer>
+<!-- ビーチクリーンレポート モーダル -->
+<div id="report-overlay" class="report-overlay" onclick="closeReport(event)">
+  <div class="report-modal" id="report-modal">
+    <button class="report-close" onclick="closeReportBtn()" aria-label="閉じる">✕</button>
+    <div class="report-hero">
+      <img id="report-img" src="" alt="" class="report-hero-img"/>
+      <div class="report-hero-grad"></div>
+      <div class="report-hero-info">
+        <div class="report-tag">📋 ビーチクリーンレポート</div>
+        <h2 class="report-title" id="report-title"></h2>
+        <div class="report-meta-row" id="report-meta"></div>
+      </div>
+    </div>
+    <div class="report-body">
+      <div class="report-stats-row" id="report-stats"></div>
+      <div class="report-content" id="report-content"></div>
+      <div class="report-footer-row" id="report-footer"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ── Scroll reveal ── */
 const revealEls = document.querySelectorAll('.reveal');
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); if (e.target.classList.contains('mapouter')) { setTimeout(() => window.umisanpoMap.invalidateSize(), 100); } }
   });
 }, { threshold: 0.15 });
 revealEls.forEach(el => revealObs.observe(el));
@@ -645,6 +937,8 @@ function startGame() {
   if (gCountEl)  gCountEl.textContent  = 0;
   // hide overlay
   if (gOverlay)  gOverlay.style.display = 'none';
+  const nw = document.getElementById('gname-wrap');
+  if (nw) nw.style.display = 'none';
   // clear old items
   if (gField) gField.querySelectorAll('.g-item,.g-pop').forEach(el => el.remove());
   // countdown
@@ -756,6 +1050,11 @@ function endGame() {
   }
   if (gBtn) gBtn.textContent = 'もう一度遊ぶ 🎮';
   if (gOverlay) gOverlay.style.display = 'flex';
+  // show name input for leaderboard
+  const nameWrap = document.getElementById('gname-wrap');
+  const nameInput = document.getElementById('gname-input');
+  if (nameWrap) { nameWrap.style.display = 'flex'; }
+  if (nameInput) nameInput.value = '';
 }
 
 /* ══════════════════════════════════════════
@@ -763,51 +1062,75 @@ function endGame() {
 ══════════════════════════════════════════ */
 const places = [
   {c:[35.63862,139.85526], n:"葛西臨海公園", d:"2025-10-26", p:17, g:"9.875kg",
-   img:"images/kasai.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DQXBAdDk4Aw"},
+   img:"images/kasai.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DQXBAdDk4Aw",
+   report:null},
   {c:[35.30878,139.47996], n:"片瀬西浜海岸（江ノ島）", d:"2025-11-09", p:9, g:"1.95kg",
-   img:"images/enoshima.jpg", r:{f:1.44,nf:0.51}, ig:"https://www.instagram.com/p/DQ34gaviOj4/"},
+   img:"images/enoshima.jpg", r:{f:1.44,nf:0.51}, ig:"https://www.instagram.com/p/DQ34gaviOj4/",
+   report:null},
   {c:[35.63862,139.85526], n:"葛西海浜公園（Green Sophiaとの合同）", d:"2025-11-16", p:13, g:"5.92kg",
-   img:"images/kasai(2).jpg", r:{f:1.93,nf:3.99}, ig:"https://www.instagram.com/p/DRRH9_tk0hT"},
+   img:"images/kasai(2).jpg", r:{f:1.93,nf:3.99}, ig:"https://www.instagram.com/p/DRRH9_tk0hT",
+   report:null},
   {c:[35.76073,139.80117], n:"ゴミ拾い甲子園", d:"2025-12-07", p:15, g:"???",
-   img:"images/ゴミ拾い甲子園.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DSRLyDTk88d"},
+   img:"images/ゴミ拾い甲子園.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DSRLyDTk88d",
+   report:null},
   {c:[35.71303,139.70459], n:"高田馬場駅周辺", d:"2025-12-21", p:5, g:"5.385kg",
-   img:"images/高田馬場合同清掃.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DSh76r3kx8q"},
+   img:"images/高田馬場合同清掃.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DSh76r3kx8q",
+   report:null},
   {c:[35.63136,139.77716], n:"お台場海浜公園", d:"2025-12-28", p:15, g:"5.385kg",
-   img:"images/お台場海浜公園ビーチクリーン.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DS_fQrEE3i8"},
+   img:"images/お台場海浜公園ビーチクリーン.jpg", r:{f:0,nf:0}, ig:"https://www.instagram.com/p/DS_fQrEE3i8",
+   report:null},
   {c:[35.09801,139.07667], n:"熱海サンビーチ", d:"2026-02-14", p:15, g:"4.22kg",
-   img:"images/atami.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/atami.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.63136,139.77716], n:"お台場海浜公園（成城大学との合同）", d:"2026-02-16", p:19, g:"4.22kg",
-   img:"images/お台場えしかる.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/お台場えしかる.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.81519464165583, 139.63304625923078], n:"戸田市荒川ビーチクリーン", d:"2026-03-02", p:8, g:"4.22kg",
-   img:"images/戸田市荒川ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/戸田市荒川ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[37.85529625971881, 138.2742375358263], n:"素浜海岸ビーチクリーン", d:"2026-03-10", p:9, g:"4.22kg",
-   img:"images/素浜海岸ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/素浜海岸ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.73012129706336, 139.71110993088152], n:"池袋合同清掃", d:"2026-03-19", p:8, g:"20kg",
-   img:"images/池袋合同清掃.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/池袋合同清掃.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.63136,139.77716], n:"旅するGreen", d:"2026-03-29", p:15, g:"4.22kg",
-   img:"images/旅するGreen.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/旅するGreen.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.61495254797961, 140.06365184142285], n:"いなげの浜ビーチクリーン", d:"2026-04-19", p:31, g:"4.22kg",
-   img:"images/いなげの浜ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null},
-  {c:[35.63136,139.77716], n:"大成温調株式会社様LIVZONクリーンアップ", d:"2026-05-5", p:30, g:"4.22kg",
-   img:"images/大成温調株式会社様LIVZONカップクリーンアップ活動.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/いなげの浜ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
+  {c:[35.63136,139.77716], n:"大成温調株式会社様LIVZONクリーンアップ", d:"2026-05-05", p:30, g:"4.22kg",
+   img:"images/大成温調株式会社様LIVZONカップクリーンアップ活動.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.30933224435171, 139.54225131649522], n:"由比ガ浜ビーチクリーン", d:"2026-05-09", p:19, g:"4.22kg",
-   img:"images/由比ケ浜ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/由比ケ浜ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
   {c:[35.63862,139.85526], n:"葛西臨海公園ビーチクリーン", d:"2026-05-16", p:19, g:"4.22kg",
-   img:"images/葛西海浜公園ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null},
+   img:"images/葛西海浜公園ビーチクリーン.jpg", r:{f:0,nf:0}, ig:null,
+   report:null},
 ];
 
 /* ── Auto-calculate stats from places data ── */
 (function updateStats() {
-  const count   = places.length;
-  const people  = places.reduce((s, pl) => s + pl.p, 0);
-  const weight  = places.reduce((s, pl) => {
+  const count  = places.length;
+  const people = places.reduce((s, pl) => s + pl.p, 0);
+  const weight = places.reduce((s, pl) => {
     const w = parseFloat(pl.g);
     return s + (isNaN(w) ? 0 : w);
   }, 0);
-  const el = (id) => document.getElementById(id);
-  if (el('stat-count'))  el('stat-count').textContent  = count + '回+';
-  if (el('stat-people')) el('stat-people').textContent = people + '名+';
-  if (el('stat-weight')) el('stat-weight').textContent = weight.toFixed(2).replace(/\.?0+$/, '') + 'kg+';
+  const spots  = new Set(places.map(pl => pl.c[0].toFixed(5) + ',' + pl.c[1].toFixed(5))).size;
+  const wStr   = weight.toFixed(2).replace(/\.?0+$/, '') + 'kg';
+  function set(id, val) { const e = document.getElementById(id); if (e) e.textContent = val; }
+  // About section
+  set('about-stat-count',  count  + '回+');
+  set('about-stat-people', people + '名+');
+  set('about-stat-weight', wStr   + '+');
+  // Map section
+  set('map-stat-count',  count  + '回');
+  set('map-stat-people', people + '名');
+  set('map-stat-weight', wStr);
+  set('map-stat-spots',  spots  + 'ヶ所');
 })();
 
 /* group by coordinate */
@@ -818,26 +1141,45 @@ places.forEach(pl => {
   (groups[k] = groups[k] || []).push(pl);
 });
 
-/* pie chart SVG */
+/* pie chart SVG — proper arc-path implementation */
 function makePie(f, nf) {
   const total = f + nf;
   if (total === 0) return '<div class="pie-na">比率データなし</div>';
-  const r = 26, cx = 30, cy = 30, circ = 2 * Math.PI * r;
-  const frac  = f / total;
-  const dash  = frac * circ;
-  const gap   = circ - dash;
+  const cx = 30, cy = 30, r = 27;
+  const frac = f / total;
+  const pct  = Math.round(frac * 100);
+
+  function polar(angleDeg) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+  }
+  function arc(startDeg, endDeg, color) {
+    // clamp to avoid degenerate arcs
+    if (Math.abs(endDeg - startDeg) < 0.5) return '';
+    if (Math.abs(endDeg - startDeg) >= 359.5) {
+      // Full circle — draw as circle element
+      return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}"/>`;
+    }
+    const [x1,y1] = polar(startDeg);
+    const [x2,y2] = polar(endDeg);
+    const large   = (endDeg - startDeg) > 180 ? 1 : 0;
+    return `<path d="M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 ${large},1 ${x2.toFixed(2)},${y2.toFixed(2)} Z" fill="${color}"/>`;
+  }
+
+  const fDeg = frac * 360;  // flammable arc in degrees
+  const svg  = `<svg width="64" height="64" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    ${arc(0, fDeg || 0,      '#FF6B6B')}
+    ${arc(fDeg, 360,         '#90E0EF')}
+    <text x="${cx}" y="${cy+4}" text-anchor="middle"
+      font-size="9" fill="#012A5E" font-weight="700">${pct}%</text>
+  </svg>`;
+
   return `<div class="pie-wrap">
-    <svg width="60" height="60" viewBox="0 0 60 60">
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="#90E0EF"/>
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none"
-        stroke="#FF6B6B" stroke-width="${r * 2}"
-        stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}"
-        transform="rotate(-90 ${cx} ${cy})"/>
-      <text x="${cx}" y="${cy + 4}" text-anchor="middle"
-        font-size="9" fill="#012A5E" font-weight="700">${Math.round(frac * 100)}%</text>
-    </svg>
-    <div class="pie-leg"><span style="color:#ff6b6b">■</span>可燃 ${f}kg &nbsp;
-      <span style="color:#90E0EF">■</span>不燃 ${nf}kg</div>
+    ${svg}
+    <div class="pie-leg">
+      <span style="color:#FF6B6B">■</span>可燃 ${f}kg&nbsp;&nbsp;
+      <span style="color:#90E0EF">■</span>不燃 ${nf}kg
+    </div>
   </div>`;
 }
 
@@ -847,7 +1189,7 @@ function buildPopup(group) {
   let slides = group.map((pl, i) => {
     const pie    = makePie(pl.r.f, pl.r.nf);
     const igLink = pl.ig
-      ? `<a href="${pl.ig}" target="_blank" class="ig-link">📷 Instagram</a>` : '';
+      ? `<a href="${pl.ig}" target="_blank" class="ig-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="vertical-align:middle;margin-right:3px"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>Instagram</a>` : '';
     return `<div class="pop-slide" style="display:${i===0?'block':'none'}">
       <div class="pop-img-wrap">
         <img src="${pl.img}" alt="${pl.n}" loading="lazy"
@@ -861,7 +1203,10 @@ function buildPopup(group) {
           <span>🗑️ ${pl.g}</span>
         </div>
         <div class="pop-pie">${pie}</div>
-        ${igLink}
+        <div class="pop-actions">
+          ${igLink}
+          <button class="pop-report-btn" onclick="openReportByIndex(${places.indexOf(pl)})">📋 レポートを読む</button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -894,11 +1239,11 @@ window.slideStep = function(btn, dir) {
 /* initialise map */
 const mapEl = document.getElementById('lmap');
 if (mapEl) {
-  const map = L.map('lmap', { center:[35.5, 139.6], zoom:9 });
+  window.umisanpoMap = L.map('lmap', { center:[35.5, 139.6], zoom:9 });
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom:19
-  }).addTo(map);
+  }).addTo(window.umisanpoMap);
 
   const clusterGroup = L.markerClusterGroup({
     iconCreateFunction(cluster) {
@@ -921,7 +1266,8 @@ if (mapEl) {
     m.bindPopup(buildPopup(group), {maxWidth:320, className:'custom-popup', minWidth:260});
     clusterGroup.addLayer(m);
   });
-  map.addLayer(clusterGroup);
+  window.umisanpoMap.addLayer(clusterGroup);
+  setTimeout(() => window.umisanpoMap.invalidateSize(), 300);
 
   /* sidebar list */
   const mList   = document.getElementById('mlist');
@@ -960,7 +1306,7 @@ if (mapEl) {
       card.addEventListener('click', () => {
         const lat = parseFloat(card.dataset.lat);
         const lng = parseFloat(card.dataset.lng);
-        map.setView([lat, lng], 13, {animate:true});
+        window.umisanpoMap.setView([lat, lng], 13, {animate:true});
         // open matching marker popup
         clusterGroup.eachLayer(layer => {
           const ll = layer.getLatLng();
@@ -990,6 +1336,218 @@ if (mapEl) {
 
   renderList();
 }
+/* ══ Live donation stats ══ */
+async function fetchDonationStats() {
+  const dot    = document.getElementById('dlive-dot');
+  const label  = document.getElementById('dlive-label');
+  const btn    = document.getElementById('dlive-refresh');
+  const TARGET = 30000;
+
+  function setEl(id, val) { const e = document.getElementById(id); if (e) e.textContent = val; }
+  function fmt(n) { return n.toLocaleString('ja-JP'); }
+
+  if (btn) btn.classList.add('spinning');
+  if (label) label.textContent = '更新中...';
+
+  // Try two CORS proxies in sequence
+  const PROXIES = [
+    'https://api.allorigins.win/get?url=',
+    'https://corsproxy.io/?',
+  ];
+  const TARGET_URL = 'https://gateway.taisei-oncho.co.jp/click_donation/umisanpo/';
+
+  let clicks = null;
+
+  for (const proxy of PROXIES) {
+    try {
+      const res = await fetch(proxy + encodeURIComponent(TARGET_URL), { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const raw  = data.contents || data.body || '';
+
+      // Parse click count from server-rendered HTML
+      const m = raw.match(/総クリック数\s*([0-9,]+)/);
+      if (m) {
+        clicks = parseInt(m[1].replace(/,/g, ''), 10);
+        break;
+      }
+    } catch (e) { /* try next proxy */ }
+  }
+
+  if (btn) btn.classList.remove('spinning');
+
+  if (clicks !== null && !isNaN(clicks)) {
+    const amount  = clicks * 10;
+    const remain  = Math.max(0, TARGET - clicks);
+    const pct     = Math.min(100, (clicks / TARGET) * 100).toFixed(1);
+    const now     = new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'});
+
+    setEl('d-clicks',  fmt(clicks));
+    setEl('d-amount',  fmt(amount) + '円');
+    setEl('d-remain',  fmt(remain) + 'クリック');
+
+    const bar  = document.getElementById('dprogress');
+    const pnum = document.getElementById('dpnum');
+    if (bar)  bar.style.width = pct + '%';
+    if (pnum) pnum.textContent = fmt(clicks) + ' / ' + fmt(TARGET) + 'クリック';
+
+    if (dot)   { dot.className = 'dlive-dot live'; }
+    if (label) label.textContent = '最終更新 ' + now + ' (リアルタイム)';
+  } else {
+    // Fallback to static values
+    setEl('d-clicks',  '5,255');
+    setEl('d-amount',  '52,550円');
+    setEl('d-remain',  '24,745クリック');
+    const bar  = document.getElementById('dprogress');
+    const pnum = document.getElementById('dpnum');
+    if (bar)  bar.style.width = '17.5%';
+    if (pnum) pnum.textContent = '5,255 / 30,000クリック';
+    if (dot)   { dot.className = 'dlive-dot error'; }
+    if (label) label.textContent = 'データ取得に失敗しました（固定値を表示中）';
+  }
+}
+
+// Fetch on load + every 5 minutes
+fetchDonationStats();
+setInterval(fetchDonationStats, 5 * 60 * 1000);
+
+/* ══ ビーチクリーンレポート モーダル ══ */
+const IG_SVG_BTN = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>`;
+
+function openReportByIndex(i) { openReport(places[i]); }
+function openReport(pl) {
+  // close any open Leaflet popup
+  if (window.umisanpoMap) window.umisanpoMap.closePopup();
+
+  const overlay = document.getElementById('report-overlay');
+  const pie = makePie(pl.r.f, pl.r.nf);
+
+  // hero
+  document.getElementById('report-img').src   = pl.img || '';
+  document.getElementById('report-img').alt   = pl.n;
+  document.getElementById('report-title').textContent = pl.n;
+  document.getElementById('report-meta').innerHTML =
+    `<span>📅 ${pl.d}</span><span>👥 ${pl.p}人</span><span>🗑️ ${pl.g}</span>`;
+
+  // stats
+  document.getElementById('report-stats').innerHTML = `
+    <div class="rst"><div class="rstn">${pl.p}名</div><div class="rstl">参加人数</div></div>
+    <div class="rst"><div class="rstn">${pl.g}</div><div class="rstl">回収ごみ量</div></div>
+    <div class="rst"><div class="rstn">${pl.d.slice(0,7)}</div><div class="rstl">実施月</div></div>`;
+
+  // pie chart
+  const pieSection = (pl.r.f > 0 || pl.r.nf > 0)
+    ? `<div class="report-pie-wrap">${pie}<div style="font-size:.82rem;color:var(--tm);line-height:1.6">
+        ごみの内訳<br><span style="color:#FF6B6B;font-weight:700">可燃 ${pl.r.f}kg</span> /
+        <span style="color:#0077B6;font-weight:700">不燃 ${pl.r.nf}kg</span></div></div>` : '';
+
+  // report body
+  let content = '';
+  if (pl.report) {
+    content = `<div class="report-content">${pieSection}${pl.report}</div>`;
+  } else {
+    content = `<div class="report-content">${pieSection}
+      <div class="report-coming">
+        <div class="report-coming-icon">📝</div>
+        <p>この活動のビーチクリーンレポートは<strong>準備中</strong>です。<br>
+        活動後のレポートは順次追加される予定です。<br>
+        最新情報は Instagram をチェックしてください！</p>
+      </div></div>`;
+  }
+  document.getElementById('report-content').innerHTML = content;
+
+  // footer
+  const igBtn = pl.ig
+    ? `<a href="${pl.ig}" target="_blank" rel="noopener" class="report-ig-btn">${IG_SVG_BTN} Instagram で見る</a>` : '';
+  document.getElementById('report-footer').innerHTML = igBtn;
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openReport = openReport;
+
+function closeReport(e) {
+  if (e.target === document.getElementById('report-overlay')) {
+    _doCloseReport();
+  }
+}
+function closeReportBtn() { _doCloseReport(); }
+function _doCloseReport() {
+  document.getElementById('report-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.closeReport = closeReport;
+window.closeReportBtn = closeReportBtn;
+
+// ESC key to close
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') _doCloseReport();
+});
+
+/* ══ Leaderboard ══ */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwIfmomEQpGTitYBV2-bLPNJndojb4Qqt8O2SGJaAzufiU0fMd8euwtMq4lQ-fjMRzl/exec';
+
+function renderLeaderboard(lb) {
+  const el = document.getElementById('gleaderboard');
+  if (!el) return;
+  if (!lb || lb.length === 0) {
+    el.innerHTML = '<div class="gleader-empty">まだ記録がありません。ゲームに挑戦しよう！🏖️</div>';
+    return;
+  }
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  el.innerHTML = lb.map((e, i) => `
+    <div class="gleader-row${i===0?' gleader-top':''}">
+      <span class="gleader-rank">${medals[i] || (i+1)+'.'}</span>
+      <span class="gleader-name">${String(e.name).replace(/</g,'&lt;')}</span>
+      <span class="gleader-score">${e.score}<small>pt</small></span>
+      <span class="gleader-date">${e.date}</span>
+    </div>`).join('');
+}
+window.renderLeaderboard = renderLeaderboard;
+
+async function fetchLeaderboard() {
+  const el = document.getElementById('gleaderboard');
+  if (el) el.innerHTML = '<div class="gleader-empty">読み込み中...</div>';
+  try {
+    const res = await fetch(GAS_URL, { method: 'GET' });
+    const lb  = await res.json();
+    renderLeaderboard(lb);
+  } catch(e) {
+    if (el) el.innerHTML = '<div class="gleader-empty">ランキング取得に失敗しました </div>';
+  }
+}
+
+async function saveScore() {
+  const input = document.getElementById('gname-input');
+  const name  = (input ? input.value.trim() : '') || '名無し';
+  const nw    = document.getElementById('gname-wrap');
+  if (nw) nw.style.display = 'none';
+
+  const el = document.getElementById('gleaderboard');
+  if (el) el.innerHTML = '<div class="gleader-empty">送信中...</div>';
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ name, score: gScore }),
+    });
+    const lb = await res.json();
+    renderLeaderboard(lb);
+  } catch(e) {
+    if (el) el.innerHTML = '<div class="gleader-empty">送信に失敗しました 😢</div>';
+  }
+}
+window.saveScore = saveScore;
+
+function skipSave() {
+  const nw = document.getElementById('gname-wrap');
+  if (nw) nw.style.display = 'none';
+}
+window.skipSave = skipSave;
+
+// ページ読み込み時にランキング取得
+fetchLeaderboard();
+
 </script>
 </body>
 </html>
